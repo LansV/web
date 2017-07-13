@@ -1,0 +1,312 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="Css/index.css">
+<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js"> </script>
+<script type="text/javascript" >
+/* var curIndex=0;
+//时间间隔(单位毫秒)，每秒钟显示一张，数组共有5张图片放在Photos文件夹下。
+//var timeInterval=3000;
+var arr=new Array();
+arr[0]="pic/1.jpg";
+arr[1]="pic/2.jpg";
+arr[2]="pic/3.jpg";
+arr[3]="pic/4.jpg";
+//alert("te"); 
+//初始化定时器
+var timer=null;
+if(timer){              
+	clearInterval(timer);  
+	timer=null;
+}
+timer = setInterval(autoPlay,2500);
+function autoPlay(){
+    if (curIndex==arr.length-1) 
+    {
+        curIndex=0;
+    }
+    else
+    {
+        curIndex+=1;
+    }
+    //调用变换处理函数
+    changeImg(curIndex);  
+  } 
+   // clearInterval(timer);
+  //清除定时器时候的重置定时器--封装
+/* function autoChangeAgain(){ 
+	var autoChange = setInterval(function(){
+    if (curIndex==arr.length-1) 
+    {
+        curIndex=0;
+    }
+    else
+    {
+        curIndex+=1;
+    }
+    //调用变换处理函数
+    changeImg(curIndex);
+  },2500);
+	
+} 
+function mouseOver(obj)
+{
+	var num=obj.innerHTML-1;
+	var liarr=document.getElementById("indexList").getElementsByTagName("li");
+	liarr[curIndex].style.backgroundImage="url(pic/indexbg.png)";
+	curIndex=num;
+	changeImg(curIndex);
+	window.clearInterval(autoChange);
+}
+function mouseOut()
+{
+	autoChangeAgain();
+}
+function changeImg(num)
+{
+	try{
+		var liarr=document.getElementById("indexList").getElementsByTagName("li");
+		//alert(liarr[num].innerHTML);
+		var n=num-1;
+		//removeClass(liarr[num],"indexOn");
+        //addClass(liarr[num+1],"indexOn");
+		if(n<0){
+			n=3;
+		}
+		liarr[n].style.backgroundImage="url(pic/indexbg.png)";
+		liarr[num].style.backgroundImage="url(pic/indexs.png)";
+	}catch(err){
+		alert(err.message);	
+	}
+    var obj=document.getElementById("obj");
+    obj.src=arr[num];
+
+} */
+$(document).ready(function(){
+	var curIndex=0;
+	//时间间隔(单位毫秒)，每秒钟显示一张，数组共有5张图片放在Photos文件夹下。
+	//var timeInterval=3000;
+	var arr=new Array();
+	arr[0]="pic/1.jpg";
+	arr[1]="pic/2.jpg";
+	arr[2]="pic/3.jpg";
+	arr[3]="pic/4.jpg";
+	//alert("te"); 
+	//初始化定时器
+	var timer=null;
+	if(timer){              
+		clearInterval(timer);  
+		timer=null;
+	}
+	timer = setInterval(autoPlay,2500);
+	function autoPlay(){
+	    if (curIndex==arr.length-1) 
+	    {
+	        curIndex=0;
+	    }
+	    else
+	    {
+	        curIndex+=1;
+	    }
+	    //调用变换处理函数
+	    changeImg(curIndex);  
+	  }
+	$("#top").mouseover(function(){
+		//alert("te");
+		clearInterval(timer);
+	});
+	$("#top").mouseout(function(){
+		//alert("te");
+		timer = setInterval(autoPlay,2500);
+	});
+	alert(arr.length);
+	for(var i=0;i<arr.length;i++){
+		var li=document.getElementById("indexList").getElementsByTagName("li");
+		li[i].onmouseover=function(){
+			clearInterval(timer);
+			alert($(this).index());
+		}
+	}
+	function changeImg(num)
+	{
+		try{
+			var liarr=document.getElementById("indexList").getElementsByTagName("li");
+			var n=num-1;
+			if(n<0){
+				n=3;
+			}
+			liarr[n].style.backgroundImage="url(pic/indexbg.png)";
+			liarr[num].style.backgroundImage="url(pic/indexs.png)";
+		}catch(err){
+			alert(err.message);	
+		}
+	    var obj=document.getElementById("obj");
+	    obj.src=arr[num];
+	} 
+	//alert("te"); 
+});
+
+</script>
+<title>天澜公司首页</title>
+</head>
+<body oncontextmenu=self.event.returnValue=false onselectstart="return false">
+    <div id="allcenter" >
+    <div id="flo">
+       <a href="Login.jsp"><img id="login" src="pic/Login.jpg" /></a>
+    </div>
+	 <div id="top">
+            <img id="obj" src="pic/1.jpg" />
+            <div id="cindex">
+              <ul id="indexList">
+            	<li class="indexOn" >1</li>
+                <li>2</li>
+                <li>3</li>
+                <li>4</li>
+              </ul>
+            </div>
+            <div id="header">
+                <ul>
+                    <li><a href="">首页</a></li>
+                    <li><a href="">关于我们</a></li>
+                    <li><a href="">新闻资讯</a></li>
+                    <li><a href="">产品展示</a></li>
+                    <li><a href="">联系我们</a></li>
+                </ul>
+            </div>
+            <div id="logo">
+                <img src="pic/logo.png" />
+            </div>
+        </div>
+        
+        
+        
+        <div id="producttext">
+            <div id="centtext">
+                <h1>PRODUCT</h1>
+                <h2>产品展示</h2>
+            </div>
+        </div>
+        
+        
+        
+        <div id="promain">
+          <div id="promore">
+            <img class="mimg" src="pic/2.jpg" alt="Pineapple">
+            <div id="more" >
+            <a href="">>>更多</a>
+            </div>
+         </div>
+         <div id="propic" >
+            <img class="mimg" src="pic/2.jpg" alt="Pineapple">
+            <div id="zl1">
+            <a class="zla" href=""><img class="zlimg" src="pic/2.jpg" alt="Pineapple">高压清洗</a>
+            </div>
+            <div id="zl2">
+            <a class="zla" href=""><img class="zlimg" src="pic/2.jpg" alt="Pineapple">美容化工</a>
+            </div>
+            <div id="zl3">
+            <a class="zla" href=""><img class="zlimg" src="pic/2.jpg" alt="Pineapple">周边产品</a>
+            </div>
+            <div id="zl4">
+            <a class="zla" href=""><img class="zlimg" src="pic/2.jpg" alt="Pineapple">代理产品</a>
+            </div>
+         </div>
+        </div>
+        
+          
+          
+        <div id="casetext">
+            <div id="centtext">
+                <h1>CASE</h1>
+                <h2>案例展示</h2>
+            </div>
+        </div>
+        
+        
+        
+        <div id="casemain">
+          <div id="promore">
+            <img class="mimg" src="pic/2.jpg" alt="Pineapple">
+            <div id="more" >
+            <a href="">>>更多</a>
+            </div>
+         </div>
+         <div id="propic" >
+            <img class="mimg" src="pic/2.jpg" alt="Pineapple">
+            <div id="zl1">
+            <a class="zla" href=""><img class="zlimg" src="pic/2.jpg" alt="Pineapple">汽车美容</a>
+            </div>
+            <div id="zl2">
+            <a class="zla" href=""><img class="zlimg" src="pic/2.jpg" alt="Pineapple">大型养殖</a>
+            </div>
+            <div id="zl3">
+            <a class="zla" href=""><img class="zlimg" src="pic/2.jpg" alt="Pineapple">化工涂料</a>
+            </div>
+            <div id="zl4">
+            <a class="zla" href=""><img class="zlimg" src="pic/2.jpg" alt="Pineapple">电子电路</a>
+            </div>
+         </div>
+        </div>
+        
+        
+        
+        
+        
+         <div id="abouttext">
+            <div id="centtext">
+                <h1>ABOUT US</h1>
+                <h2>关于我们</h2>
+            </div>
+        </div>
+        
+        
+        
+        
+        
+        <div id="aboutmain">
+       	 <img class="mimg" src="pic/2.jpg" alt="Pineapple">
+            <div id="aboutcompany">
+                <div id="more" >
+                <a href="">>>更多</a>
+                </div>
+            	 <img class="nimg" src="pic/2.jpg" alt="Pineapple">
+            </div>
+            <div id="support">
+           		<a  href=""><img class="nimg" src="pic/2.jpg" alt="Pineapple"></a>
+            </div>
+        </div>
+        
+        
+        
+        
+          <div id="conttext">
+            <div id="centtext">
+                <h1>CONTACT US</h1>
+                <h2>联系我们</h2>
+            </div>
+        </div>
+        
+        
+        <div id="contactmain">
+        	<div id="contactimg">
+            	<img class="mimg" src="pic/2.jpg" alt="Pineapple">
+            </div>
+        	<div id="contacttext">
+                <h3>江门市天澜清洗设备有限公司</h3>
+                <br>
+                <h5>地址：广东省江门市蓬江区潮连坦边方岳里一巷一号</h5>
+                <h5>电话：0750-6223608    传真：0750-6623608</h5>
+                <h5>网址：www.jmtlcm.com</h5>
+                <h5>邮箱：476394162@qq.com</h5>
+            </div>
+        </div>
+        
+        
+        
+        <div id="foot">
+        </div>
+    </div>
+        
+</body>
+</html>

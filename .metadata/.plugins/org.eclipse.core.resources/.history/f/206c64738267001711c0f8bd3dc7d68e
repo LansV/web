@@ -1,0 +1,12 @@
+package com.tlweb;
+
+import java.sql.Connection;
+
+public class CheckSN {
+	Dao d=new Dao();
+	Connection con=d.getcon();
+	public  CheckSN(){
+		
+	};
+	
+}

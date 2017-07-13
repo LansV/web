@@ -1,0 +1,203 @@
+<%@ page language="java" contentType="text/html; charset=GB18030"
+    pageEncoding="GB18030"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=GB18030">
+<title>用户注册</title>
+<script language="javascript">
+//---------------------------------------------------
+//******************************************************
+//******************************************************
+	function createRequest(url) {
+	    http_request = false;
+	    if (window.XMLHttpRequest) {    							   // 非IE浏览器
+	        http_request = new XMLHttpRequest();	                      //创建XMLHttpRequest对象
+	    } else if (window.ActiveXObject) {     						   // IE浏览器
+	        try {
+	            http_request = new ActiveXObject("Msxml2.XMLHTTP");	   //创建XMLHttpRequest对象
+	        } catch (e) {
+	            try {
+	                http_request = new ActiveXObject("Microsoft.XMLHTTP");  //创建XMLHttpRequest对象
+	           } catch (e) {}
+	        }
+	    }
+	    if (!http_request) {
+	        alert("不能创建XMLHttpRequest对象实例！");
+	        return false;
+	    }
+	    http_request.onreadystatechange = getNameResult;					   //调用返回结果处理函数
+	    http_request.open('GET', url, true);							   //创建与服务器的连接
+	    http_request.send(null);									   //向服务器发送请求
+	}
+	function getNameResult() {
+	    if (http_request.readyState == 4) {     		// 判断请求状态
+	        if (http_request.status == 200) {     		// 请求成功，开始处理返回结果
+	            document.getElementById("showtip").innerHTML=http_request.responseText;	//设置提示内容
+	            alert(http_request.responseText);
+	           // document.getElementById("toolTip").style.display="block";	//显示提示框
+	        } else {     						// 请求页面有错误
+	            alert("您所请求的页面有错误！");
+	        }
+	    }
+	}
+function checkUser(){
+	var user= document.getElementById("usert");
+	var regex =/^1[3|4|5|7|8][0-9]\d{4,8}$/;
+	if(user.value==""){
+		document.getElementById("showtip").innerHTML="请输入手机号";return;
+	}else{
+		if(regex.test(user.value)){
+			createRequest('AjaxJs/CheckUser.jsp?user='+encodeURI(user.value)+'&datetime='+new Date().getTime());
+		}else{
+			document.getElementById("showtip").innerHTML="您输入的手机号不正确";
+		}
+		
+	}
+}
+function checkPass(){
+	var pass= document.getElementById("passt1");
+	var pass2= document.getElementById("passt2");
+	var passregex=/^[0-9a-zA-Z@#%^_]{6,16}$/;
+	if(pass.value==""){
+		document.getElementById("showpass1").innerHTML="请输入密码";return;
+	}else{
+		if(passregex.test(pass.value)){
+			document.getElementById("showpass1").innerHTML="";
+			if(pass.value==pass2.value){
+				document.getElementById("showpass2").innerHTML="";
+			}else{
+				document.getElementById("showpass2").innerHTML="两次密码不一致";
+			}
+		}else{
+			document.getElementById("showpass1").innerHTML="密码长度不足6位或含有非法字符，请重新填写";
+		}
+	}
+}
+function equalsPass(){
+	var pass= document.getElementById("passt1");
+	var pass2= document.getElementById("passt2");
+	if(pass.value==pass2.value){
+		document.getElementById("showpass2").innerHTML="";
+	}else{
+		document.getElementById("showpass2").innerHTML="两次密码不一致";
+	}
+}//------------------------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------------------------------
+function getProvince(url) {
+    http_requestP = false;
+    if (window.XMLHttpRequest) {    							   // 非IE浏览器
+        http_requestP = new XMLHttpRequest();	                      //创建XMLHttpRequest对象
+    } else if (window.ActiveXObject) {     						   // IE浏览器
+        try {
+            http_requestP = new ActiveXObject("Msxml2.XMLHTTP");	   //创建XMLHttpRequest对象
+        } catch (e) {
+            try {
+                http_requestP = new ActiveXObject("Microsoft.XMLHTTP");  //创建XMLHttpRequest对象
+           } catch (e) {}
+        }
+    }
+    if (!http_requestP) {
+        alert("不能创建XMLHttpRequest对象实例！");
+        return false;
+    }
+    http_requestP.onreadystatechange = getProvinceResult;					   //调用返回结果处理函数
+    http_requestP.open('GET', url, true);							   //创建与服务器的连接
+    http_requestP.send(null);									   //向服务器发送请求
+}
+function getProvinceResult() {
+    if (http_requestP.readyState == 4) {     		// 判断请求状态
+        if (http_requestP.status == 200) {     		// 请求成功，开始处理返回结果
+            //var provinceArr=http_requestP.responseText.split(",");	//设置提示内容
+            document.getElementById("showtip").innerHTML=http_requestP.responseText;	//设置提示内容
+            var province=document.getElementById("province");
+            province.length=0;
+            province.options[0]=new Option("请选择省份","请选择省份");
+            for(i=1;i<provinceArr.length;i++){
+            	  province.options[i]=new Option(provinceArr[i-1],provinceArr[i-1]);
+            }
+           // document.getElementById("toolTip").style.display="block";	//显示提示框
+        } else {     						// 请求页面有错误
+            alert("您所请求的页面有错误！");
+        }
+    }
+}
+function getProvince(country){
+	if(country!="选择国家"){
+		alert(country);
+		createRequest('AjaxJs/GetProvince.jsp?country='+encodeURI(country)+'&datetime='+new Date().getTime());
+	}
+}
+</script>
+</head>
+<body>
+	<div id="regmain">
+    	<form>
+        	<table>
+            	<tr><td>用户名:</td><td><input type="text" id="usert" class="regt" maxlength="20" onblur="checkUser()" placeholder="仅支持手机注册">*<div id="showtip"></div></td></tr>
+                <tr><td>密码:</td><td><input type="password" id="passt1" class="regt" maxlength="20" onblur="checkPass()" placeholder="请输入密码">*<div id="showpass1"></div></td></tr>
+                <tr><td>确认密码:</td><td><input type="password" id="passt2" class="regt" maxlength="20" onkeyup="equalsPass()" placeholder="请确认密码">*<div id="showpass2"></div></td></tr>
+                <tr><td>联系人:</td><td><input type="text" id="contactt" class="regt" maxlength="20" placeholder="请填写真实姓名">*</td></tr>
+                <tr><td>公司(店)名称:</td><td><input type="text" id="company" class="regt" maxlength="40" placeholder="请填写真实店名">*</td></tr>
+                <tr><td>行业:</td>
+                <td>
+                <select>
+                	<option>选择行业</option>
+                    <option>美容</option>
+                    <option>养殖</option>
+                    <option>化工</option>
+                    <option>电子</option>
+                    <option>海事</option>
+                    <option>煤矿</option>
+                    <option>农业</option>
+                    <option>市政</option>
+                    <option>环卫</option>
+                    <option>五金</option>
+                    <option>造船</option>
+                    <option>物业</option>
+                    <option>其他</option>
+                </select>
+                *</td></tr>
+                <tr><td>职位:</td>
+                <td>
+                <select>
+                	<option>选择职位</option>
+                    <option>企业所有人</option>
+                    <option>经理</option>
+                    <option>店长</option>
+                    <option>主管</option>
+                    <option>职员</option>
+                    <option>操作员</option>
+                    <option>其他</option>
+                </select>
+                *</td></tr>
+                 <tr><td>国家:</td>
+                <td>
+                <select id="country" onchange="getProvince(this.value)">
+                	<option>选择国家</option>
+                	<option value="中国">中国</option>
+                	<option>越南</option>
+                	<option>新加坡</option>
+                </select>
+                *</td></tr>
+                <tr><td>省份:</td>
+                <td>
+                <select id="province">
+                	<option>选择省份</option>
+                </select>
+                *</td></tr>
+                <tr><td>选择市区:</td>
+                <td>
+                <select>
+                	<option>选择市区</option>
+                </select>
+                *</td></tr>
+                <tr><td>详细地址:</td><td><input type="text" id="daddt" maxlength="100" class="regt"placeholder="请填写真实地址">*</td></tr>
+            </table>
+            <input type="button" value="注册">
+           	 请保证注册信息真实有效，如填写虚假信息本公司有权拒绝服务。
+           	注册后账号未激活，需人工验证后激活账号。（注册时间起三个工作日内）
+        </form>
+    </div>
+</body>
+</html>
