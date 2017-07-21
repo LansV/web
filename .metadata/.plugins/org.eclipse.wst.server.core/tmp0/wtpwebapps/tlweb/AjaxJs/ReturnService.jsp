@@ -9,11 +9,12 @@
 			response.sendRedirect(request.getContextPath()+"/Login.jsp");
 		}else{
 			String getservice=new String(request.getParameter("service").getBytes("ISO-8859-1"),"UTF-8");
+			String userid=new String(request.getParameter("id").getBytes("ISO-8859-1"),"UTF-8");
 			String service=getservice.replace("\"", "");
 			if(service.equals("²úÆ·×¢²á")){
 				String st="<div id='add'><a href='javascript:void(0)' onclick='openQuestion()'><img src='pic/regadd.png'></img></a></div>";
 				GetProductRegister gpr=new GetProductRegister();
-				List<String> li=gpr.Check("10000");
+				List<String> li=gpr.Check(userid);
 				for(int i=0,l=li.size()/6;i<l;i++){
 					String s=
 							"<div id='registered'>"+

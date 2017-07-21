@@ -19,4 +19,17 @@ public class UserInfo {
 		}
 		return s;
 	}
+	public String getId(String user){
+		String s="";
+		try{
+			Statement sql = con.createStatement();
+			ResultSet res=sql.executeQuery("select * from webcustom where userid = '"+user+"'");
+			while(res.next()){
+				s=res.getString("id");
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return s;
+	}
 }

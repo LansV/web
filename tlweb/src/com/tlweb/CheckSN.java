@@ -13,8 +13,10 @@ public class CheckSN {
 		boolean b=false;
 		try {
 			Statement sql = con.createStatement();
-			ResultSet res =sql.executeQuery("");
-			b=true;
+			ResultSet res =sql.executeQuery("select*from productregister where tl_no = '"+sn+"' and registers_tatus = 0");
+			while(res.next()){
+				b=true;
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			b=false;

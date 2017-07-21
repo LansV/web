@@ -1,7 +1,0 @@
-<%@ page language="java" import="java.util.*" pageEncoding="GB18030" %>
-<%@ page  import="com.tlweb.*" %>
-<%
-	String sre=request.getHeader("referer");
-	String arr[]=sre.split("/");
-	sre=arr[arr.length-1]; 
-%>

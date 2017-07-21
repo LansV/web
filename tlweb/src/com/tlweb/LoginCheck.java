@@ -14,7 +14,7 @@ public class LoginCheck {
 			ResultSet res=sql.executeQuery("select*from webcustom where userid='"+user+"' and pass='"+pass+"' and registerstatus = 1 ");
 			if(res.next()){
 				s=user;
-				System.out.println(s);
+				//System.out.println(s);
 			}
 		}catch(Exception e){
 			e.printStackTrace();

@@ -1,0 +1,332 @@
+<%@ page language="java" contentType="text/html; charset=GB18030"
+    pageEncoding="GB18030"%>
+<%@ page  import="com.tlweb.*" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<link href="webicon.ico" rel="shortcut icon" />
+<% 
+	UserInfo uf=new UserInfo();
+	String phone="";
+	String ses="";
+	String company="";
+	String id="";
+	String checkEq="";
+ 	try{
+ 		phone=request.getParameter("uid");
+ 		company=uf.getCompany(phone);
+ 		id=uf.getId(phone);
+		if(session.getAttribute(phone)==null){
+			response.sendRedirect("Login.jsp");
+		}else{
+			ses=session.getAttribute(phone).toString();
+		}
+	}catch(Exception e){
+		response.sendRedirect("Login.jsp");
+	} 
+%>
+<meta http-equiv="Content-Type" content="text/html; charset=GB18030">
+<link rel="stylesheet" type="text/css" href="Css/CustomCtrl.css">
+<title>用户中心</title>
+</head>
+<body>
+
+
+	<div id="showques">
+		<div id="question">
+			<div id="questop" style="width:auto;height:60px;">
+				<input  id="SN"
+				style="text-align:center;border-radius:5px;border:1px solid #a0b1c4;width:350px;margin:10px;height:40px;float:left;" 
+				placeholder="请输入设备SN码  例:MF16040600A" type="text" maxlength=20 onblur="checkSN(this)">
+				<div id="sntip" style="float:left;text-align:left;margin:11px;height:40px;width:auto;font-size:18px; line-height:44px;color:red;"></div>
+				<div id="close" style="height:24px;width:24px;float:right;margin-right:5px;margin-top:5px;"><a href='javascript:void(0)' onclick="closeQuestion()"><img src="pic/close.png"></a></div>
+			</div>
+			<div style="clear:both;margin-top:20px;">
+				<table cellspacing="5">
+					<tr><td><h4>安装要求</td></tr>
+					<tr><td>1.请按照安装图纸安装 2.供水管路需满足产品流量 3.电路需具备从业资格人员安装</td></tr>
+					<tr><td><h4>使用要求</td></tr>
+					<tr><td>1.请仔细阅读本产品使用说明书 2.使用过程中严禁违规操作 3.请确保操作人员已明确知晓重要安全说明</td></tr>
+					<tr><td><h4>保修事项</td></tr>
+					<tr><td>1.对于违规操作产生的故障不予以保修 2.保修起始日期为注册日期 3.如注册日期与出厂日期相差15日按出厂日期计算保修日期</td></tr>
+					<tr><td><h4>其他事项</td></tr>
+					<tr><td>1.收货前请与经销商确认出厂日期 2.保修详细：电机及泵保修365日； 3.电器、电气设备保修30日</td></tr>
+					<tr></tr>
+					<tr></tr>
+					<tr></tr>
+					<tr></tr>
+					<tr>
+					<tr><td><input  type="checkbox" id="agreement" onclick="checkUserAgree(this)">已仔细阅读上述要求及事项,并同意遵守</td></tr>
+					<tr>
+				</table>
+			</div>
+			<input id="registerB" style="position:absolute; border:0px;color:white;font-size:20px;border-radius:3px;
+			width:300px;height:45px;background-color:gray;left:300px;bottom:30px;" type="button"  value="注册" 
+			onmousemove="getFocus()" onclick="clickButton()" disabled=true>
+		</div>
+	</div>
+	
+	
+	
+	<div id="header">
+		<a href="index.html">天澜清洗设备有限公司用户平台</a>
+	</div>
+	
+	
+	
+	<div id="main">
+		<div id="all">
+			<div id="sec">
+				<div id="left">
+					<table>
+						<tr>
+							<td style="text-align:center;" colspan="2"><%=company %></td>
+						</tr>
+						<tr>
+						</tr>
+						<tr>
+							<td class="lef">星级:</td>
+							<td>暂无</td>
+						</tr>
+						<tr>
+						</tr>
+						<tr>
+							<td class="lef">信用:</td>
+							<td>暂无</td>
+						</tr>
+						<tr>
+						</tr>
+						<tr>
+							<td class="lef">积分:</td>
+							<td>暂无</td>
+						</tr>
+						<tr>
+						</tr>
+						<tr>
+							<td style="text-align:center;" colspan="2"><a style="text-decoration:none;color:black;" href="#">业务记录</a></td>
+						</tr>
+					</table>
+				</div>
+				<div id="right">
+					<div id="top">
+						<ul id="indexList">
+							<li><a style="border:0px;color:white;background:#00a2e9;"  href="javascript:void(0)"  onclick='selectservice(this)'>产品注册</a></li>
+							<li><a href="javascript:void(0)" onclick='selectservice(this)'>售后申请</a></li>
+							<li><a href="javascript:void(0)" onclick='selectservice(this)'>维修申请</a></li>
+							<li><a href="javascript:void(0)" onclick='selectservice(this)'>投诉建议</a></li>
+							<li><a href="javascript:void(0)" onclick='selectservice(this)'>个人信息</a></li>
+						</ul>
+					</div>
+					<div id="center">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+	
+</body>
+<script type="text/javascript"> 
+var start=createRequest('AjaxJs/ReturnService.jsp?service='+encodeURI("产品注册")+'&id='+<%=id%>+'&datetime='+new Date().getTime());
+function createRequest(url) {
+    http_request = false;
+    if (window.XMLHttpRequest) {    							   // 非IE浏览器
+        http_request = new XMLHttpRequest();	                      //创建XMLHttpRequest对象
+    } else if (window.ActiveXObject) {     						   // IE浏览器
+        try {
+            http_request = new ActiveXObject("Msxml2.XMLHTTP");	   //创建XMLHttpRequest对象
+        } catch (e) {
+            try {
+                http_request = new ActiveXObject("Microsoft.XMLHTTP");  //创建XMLHttpRequest对象
+           } catch (e) {}
+        }
+    }
+    if (!http_request) {
+        alert("不能创建XMLHttpRequest对象实例！");
+        return false;
+    }
+    http_request.onreadystatechange = getResult;					   //调用返回结果处理函数
+    http_request.open('GET', url, true);							   //创建与服务器的连接
+    http_request.send(null);									   //向服务器发送请求
+}
+function getResult() {
+    if (http_request.readyState == 4) {     		// 判断请求状态
+        if (http_request.status == 200) {     		// 请求成功，开始处理返回结果
+            document.getElementById("center").innerHTML=http_request.responseText;	//设置提示内容
+            //alert(http_request.responseText);
+           // document.getElementById("toolTip").style.display="block";	//显示提示框
+        } else {     						// 请求页面有错误
+            alert("您所请求的页面有错误！");
+        }
+    }
+}
+function openQuestion(){  //打开绑定div
+	checkEq=false;
+	var ques=document.getElementById("question");
+	ques.style.display="block";
+}
+function closeQuestion(){   //关闭绑定div
+	checkEq=false;
+	document.getElementById("sntip").innerHTML="";
+	document.getElementById("SN").value="";
+	document.getElementById("agreement").checked=false;
+	document.getElementById("registerB").disabled=true; 
+	document.getElementById("registerB").style.backgroundColor="gray";
+	var ques=document.getElementById("question");
+	ques.style.display="none";
+}
+function selectservice(obj){
+ 	var liarr=document.getElementById("indexList").getElementsByTagName("a");
+	for(i=0;i<liarr.length;i++){  //清空选中样式
+		liarr[i].style.backgroundColor="white";  
+		liarr[i].style.color="#00a2e9";
+	} 
+	//设置选中样式
+	obj.style.backgroundColor = "#00a2e9";
+	obj.style.color="white";
+	var str=JSON.stringify(obj.innerHTML);
+	//alert(str);
+	createRequest("AjaxJs/ReturnService.jsp?service="+encodeURI(str)+"&id="+<%=id%>+"&datetime="+new Date().getTime());
+	//alert(str);
+}
+var checkEq=false;
+function checkUserAgree(obj){
+	if(checkEq){
+		if(obj.checked){
+			document.getElementById("registerB").disabled=false; 
+			document.getElementById("registerB").style.backgroundColor="#5a98de";
+		}else{
+			document.getElementById("registerB").disabled=true; 
+			document.getElementById("registerB").style.backgroundColor="gray";
+		}
+	}else{
+		document.getElementById("registerB").disabled=true; 
+		document.getElementById("registerB").style.backgroundColor="gray";
+	}
+}
+function getFocus(){
+	document.getElementById("registerB").focus();
+}
+function createCheckSNRequest(url) {
+	checkEq=false;
+    http_request = false;
+    if (window.XMLHttpRequest) {    							   // 非IE浏览器
+        http_request = new XMLHttpRequest();	                      //创建XMLHttpRequest对象
+    } else if (window.ActiveXObject) {     						   // IE浏览器
+        try {
+            http_request = new ActiveXObject("Msxml2.XMLHTTP");	   //创建XMLHttpRequest对象
+        } catch (e) {
+            try {
+                http_request = new ActiveXObject("Microsoft.XMLHTTP");  //创建XMLHttpRequest对象
+           } catch (e) {}
+        }
+    }
+    if (!http_request) {
+        alert("不能创建XMLHttpRequest对象实例！");
+        return false;
+    }
+    http_request.onreadystatechange = getCheckSNResult;					   //调用返回结果处理函数
+    http_request.open('GET', url, true);							   //创建与服务器的连接
+    http_request.send(null);									   //向服务器发送请求
+}
+function getCheckSNResult() {
+	checkEq=false;
+    if (http_request.readyState == 4) {     		// 判断请求状态
+        if (http_request.status == 200) {  // 请求成功，开始处理返回结果
+        	if(http_request.responseText==0){
+        		checkEq=true;
+        		document.getElementById("sntip").innerHTML="";
+        		checkUserAgree(document.getElementById("agreement"));
+        	}else{
+        		//checkEq=false;
+        		document.getElementById("sntip").innerHTML="序列号已激活或不存在";
+        		checkUserAgree(document.getElementById("agreement"));
+        	}	
+        	//设置提示内容
+            //alert(http_request.responseText);
+            // document.getElementById("toolTip").style.display="block";	//显示提示框
+        } else {     						// 请求页面有错误
+        	checkEq=false;
+            alert("您所请求的页面有错误！");
+        }
+    }
+}
+function checkSN(obj){
+	checkEq=false;
+	var regex =/^MF[0-9]{8}[A-Z]$/;
+	if(obj.value==""){
+		document.getElementById("sntip").innerHTML="请输入序列号";
+	}else{
+		if(regex.test(obj.value)){
+			createCheckSNRequest("AjaxJs/CheckSN.jsp?sn="+encodeURI(obj.value)+"&datetime="+new Date().getTime());
+		}else{
+			document.getElementById("sntip").innerHTML="序列号格式错误，请核对";
+			checkUserAgree(document.getElementById("agreement"));
+		}
+	}
+}
+
+//-------------------------------------------------------------
+function createRegisterRequest(url) {
+	checkEq=false;
+    http_request = false;
+    if (window.XMLHttpRequest) {    							   // 非IE浏览器
+        http_request = new XMLHttpRequest();	                      //创建XMLHttpRequest对象
+    } else if (window.ActiveXObject) {     						   // IE浏览器
+        try {
+            http_request = new ActiveXObject("Msxml2.XMLHTTP");	   //创建XMLHttpRequest对象
+        } catch (e) {
+            try {
+                http_request = new ActiveXObject("Microsoft.XMLHTTP");  //创建XMLHttpRequest对象
+           } catch (e) {}
+        }
+    }
+    if (!http_request) {
+        alert("不能创建XMLHttpRequest对象实例！");
+        return false;
+    }
+    http_request.onreadystatechange = getRegisterResult;					   //调用返回结果处理函数
+    http_request.open('GET', url, true);							   //创建与服务器的连接
+    http_request.send(null);									   //向服务器发送请求
+}
+function getRegisterResult() {
+    if (http_request.readyState == 4) {     		// 判断请求状态
+        if (http_request.status == 200) {  // 请求成功，开始处理返回结果
+        	if(http_request.responseText==0){
+        		document.getElementById("registerB").disabled=true; 
+        		document.getElementById("registerB").value="已注册";
+        	}else{
+        		document.getElementById("sntip").innerHTML="未注册成功请重试";
+        		document.getElementById("registerB").disabled=false; 
+        		document.getElementById("registerB").value="注册";
+        	}	
+        	//设置提示内容
+            //alert(http_request.responseText);
+            // document.getElementById("toolTip").style.display="block";	//显示提示框
+        } else {     						// 请求页面有错误
+        	checkEq=false;
+            alert("您所请求的页面有错误！");
+        }
+    }
+}
+function clickButton(){
+	var tip=document.getElementById("sntip").innerHTML; 
+	var val=document.getElementById("SN").value;
+	var uid=<%=id%>;
+	alert(uid);
+	if(tip==""&&val!=""){
+		if(checkEq){
+			//alert("收到Ajax返回值");
+			createRegisterRequest("AjaxJs/RegisterProduct.jsp?uid="+encodeURI(uid)+"&sn="+encodeURI(val)+"&datetime="+new Date().getTime());
+			
+			<%-- createRequest('AjaxJs/ReturnService.jsp?service='+encodeURI("产品注册")+'&id='+<%=id%>+'&datetime='+new Date().getTime()); --%>
+		}else{
+			//alert("未收到Ajax返回值");
+		}
+	}else{
+		alert("请确保序列号符合要求");
+	}
+}
+</script>
+</html>

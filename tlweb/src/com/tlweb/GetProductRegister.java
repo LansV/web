@@ -2,8 +2,10 @@ package com.tlweb;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class GetProductRegister {
@@ -24,8 +26,22 @@ public class GetProductRegister {
 				s.add(res.getString("register_date"));
 			}
 		}catch(Exception e){
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		return s;
+	}
+	public boolean register(String uid,String sn){
+		Boolean b=false;
+		Date date=new Date();
+		String da=String.format("%tF", date);
+		try {
+			Statement sql = con.createStatement();
+			sql.execute("update productregister set registers_tatus=1,registrant="+uid+",register_date='"+da+"' where tl_no='"+sn+"'");
+			b=true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return b;
 	}
 }

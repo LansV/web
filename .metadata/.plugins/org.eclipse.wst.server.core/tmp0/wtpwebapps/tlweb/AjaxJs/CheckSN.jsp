@@ -9,6 +9,12 @@
 			response.sendRedirect(request.getContextPath()+"/Login.jsp");
 		}else{
 			String sn=new String(request.getParameter("sn").getBytes("ISO-8859-1"),"UTF-8");
+			CheckSN ck=new CheckSN();
+			if(ck.checkSn(sn)){
+				out.print(0);
+			}else{
+				out.print(1);
+			}
 		}
 	}catch(Exception e){
 		response.sendRedirect(request.getContextPath()+"/Login.jsp");

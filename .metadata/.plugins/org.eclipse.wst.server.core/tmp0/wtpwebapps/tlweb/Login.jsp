@@ -25,7 +25,7 @@
 	        return false;
 	    }
 	    http_request.onreadystatechange = getLoginResult;					   //调用返回结果处理函数
-	    http_request.open('GET', url, true);							   //创建与服务器的连接
+	    http_request.open('get', url, true);							   //创建与服务器的连接
 	    http_request.send(null);									   //向服务器发送请求
 	}
 	function getLoginResult() {
